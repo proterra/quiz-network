@@ -1,0 +1,14 @@
+{
+  "name": "quiz-network",
+  "author": "author",
+  "description": "Hyperledger Composer Network to support a simple Quiz",
+  "version": "0.0.1",
+  "keywords": [],
+  "license": "Apache 2.0",
+  "repository": {
+    "type": "e.g. git",
+    "url": "URL"
+  },
+  "dependencies": {
+  }
+}

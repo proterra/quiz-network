@@ -1,0 +1,45 @@
+{
+  "name": "quiz-network",
+  "author": "author",
+  "description": "Hyperledger Composer Network to support a simple Quiz",
+  "version": "0.0.1",
+  "devDependencies": {
+    "browserfs": "^1.2.0",
+    "chai": "^3.5.0",
+    "composer-admin": "0.16.0",
+    "composer-client": "0.16.0",
+    "composer-connector-embedded": "0.16.0",
+    "eslint": "^3.6.1",
+    "istanbul": "^0.4.5",
+    "jsdoc": "^3.4.1",
+    "mkdirp": "^0.5.1",
+    "mocha": "^3.2.0",
+    "moment": "^2.17.1"
+  },
+  "keywords": [],
+  "license": "Apache 2.0",
+  "repository": {
+    "type": "e.g. git",
+    "url": "URL"
+  },
+  "scripts": {
+    "deploy": "./scripts/deploy.sh",
+    "loadDemoData": "cd test && node transactionsetup.js && cd -",
+    "postinstall": "./scripts/getTools.sh",
+    "buildbna": "mkdirp ./dist && composer archive create  --sourceType dir --sourceName ./network/ -a ./dist/quiz-network.bna",
+    "pretest": "npm run lint",
+    "lint": "eslint .",
+    "postlint": "npm run licchk",
+    "licchk": "license-check",
+    "postlicchk": "npm run doc",
+    "test": "mocha -t 0 --recursive",
+    "restartFabric": "./scripts/fabric-tools/startFabric.sh",
+    "freshdeploy": "npm run buildbna && composer runtime install --card PeerAdmin@local -n quiz-network && composer network start --card PeerAdmin@local -a ./dist/quiz-network.bna -A admin -S adminpw -f ./_cards/admin@local.card",
+    "update": "npm run buildbna &&  composer network update --card admin@quiz-local -a ./dist/quiz-network.bna"
+  },
+  "dependencies": {
+    "cli-table": "^0.3.1",
+    "composer-cli": "0.16.0",
+    "composer-common": "0.16.0"
+  }
+}

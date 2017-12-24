@@ -1,0 +1,237 @@
+
+/* Student
+ * can see their own record but no body elses
+ * can view the questions
+ * can view answers from previous years
+ * can submit answers for marking
+ */
+rule Student_r1{
+    description: "Students have basic access to the network"
+    participant: "proterra.quiz.Student"
+    operation: READ
+    resource: "org.hyperledger.composer.system.Network#quiz-network@0.0.1"
+    action: ALLOW
+}
+
+/* QuizMaster
+ * can see all records
+ * can view all questions and answers
+ * Doesn't submit anything for marking
+ * Doesn't create new identities
+ */
+rule QuizMaster_r1{
+    description: "Quiz masters have basic access to the network"
+    participant: "proterra.quiz.QuizMaster"
+    operation: READ
+    resource: "org.hyperledger.composer.system.Network#quiz-network@0.0.1"
+    action: ALLOW
+}
+
+rule QuizMaster_r2{
+    description: "Network admins can create Registries"
+    participant: "proterra.quiz.QuizMaster"
+    operation: CREATE,READ
+    resource: "org.hyperledger.composer.system.AssetRegistry#org.hyperledger.composer.system.HistorianRecord"
+    action: ALLOW
+}
+
+/* Create a participant *
+rule QuizMaster_idacl_r1{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "proterra.quiz.QuizMaster"
+    operation: CREATE,READ
+    resource: "proterra.quiz.QuizMaster"
+    action: ALLOW
+}
+
+rule QuizMaster_idacl_r2{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "proterra.quiz.QuizMaster"
+    operation: CREATE
+    resource: "org.hyperledger.composer.system.AddParticipant"
+    action: ALLOW
+}
+
+rule QuizMaster_idacl_r5{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "proterra.quiz.QuizMaster"
+    operation: READ
+    resource: "org.hyperledger.composer.system.ParticipantRegistry#proterra.quiz.Student"
+    action: ALLOW
+}
+rule QuizMaster_idacl_r6{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "proterra.quiz.QuizMaster"
+    operation: CREATE
+    resource: "proterra.quiz.Student"
+    action: ALLOW
+}
+
+rule QuizMaster_idacl_r7{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "proterra.quiz.QuizMaster"
+    operation: CREATE,READ
+    resource: "org.hyperledger.composer.system.AssetRegistry#org.hyperledger.composer.system.HistorianRecord"
+    action: ALLOW
+}
+
+rule QuizMaster_idacl_r8{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "proterra.quiz.QuizMaster"
+    operation: CREATE
+    resource: "org.hyperledger.composer.system.HistorianRecord"
+    action: ALLOW
+}
+
+rule QuizMaster_idacl_r9{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "proterra.quiz.QuizMaster"
+    operation: READ
+    resource: "org.hyperledger.composer.system.TransactionRegistry#org.hyperledger.composer.system.AddParticipant"
+    action: ALLOW
+}
+
+rule QuizMaster_idacl_r10{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "proterra.quiz.QuizMaster"
+    operation: CREATE
+    resource: "org.hyperledger.composer.system.AddParticipant"
+    action: ALLOW
+}
+
+/* Issue an identity to a participant */
+rule QuizMaster_idacl_r6{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "proterra.quiz.QuizMaster"
+    operation: READ
+    resource: "proterra.quiz.Student"
+    action: ALLOW
+}
+
+rule QuizMaster_idacl_r3{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "proterra.quiz.QuizMaster"
+    operation: CREATE
+    resource: "org.hyperledger.composer.system.Identity"
+    action: ALLOW
+}
+
+rule QuizMaster_idacl_r4{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "proterra.quiz.QuizMaster"
+    operation: CREATE
+    resource: "org.hyperledger.composer.system.IssueIdentity"
+    action: ALLOW
+}
+
+rule QuizMaster_idacl_r11{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "proterra.quiz.QuizMaster"
+    operation: READ
+    resource: "org.hyperledger.composer.system.ParticipantRegistry#proterra.quiz.Student"
+    action: ALLOW
+}
+rule QuizMaster_idacl_r12{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "proterra.quiz.QuizMaster"
+    operation: READ
+    resource: "org.hyperledger.composer.system.AssetRegistry#org.hyperledger.composer.system.Identity"
+    action: ALLOW
+}
+rule QuizMaster_idacl_r13{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "proterra.quiz.QuizMaster"
+    operation: READ
+    resource: "org.hyperledger.composer.system.TransactionRegistry#org.hyperledger.composer.system.IssueIdentity"
+    action: ALLOW
+}
+
+
+/**
+ * NetworkAdmin / Business administrators
+ * Update the network,
+ * Add new participants, and can issue identities
+ * No view of the questions or answers. or results
+ */
+rule NetworkAdmin_r1{
+    description: "Network admins can do network updates etc"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.Network#quiz-network@0.0.1"
+    action: ALLOW
+}
+
+rule NetworkAdmin_r2{
+    description: "Network admins can run the setup transaction"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: CREATE
+    resource: "proterra.quiz.SetupData"
+    action: ALLOW
+}
+
+rule NetworkAdmin_r3{
+    description: "Network admins can create Registries"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: CREATE,READ
+    resource: "org.hyperledger.composer.system.Registry"
+    action: ALLOW
+}
+
+rule NetworkAdmin_r4{
+    description: "Network Admin should be able to submit the update network transaction"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: CREATE
+    resource: "org.hyperledger.composer.system.UpdateBusinessNetwork"
+    action: ALLOW
+}
+
+rule NetworkAdmin_r5{
+    description: "Network Admin should be able to submit the update network transaction"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: CREATE
+    resource: "org.hyperledger.composer.system.HistorianRecord"
+    action: ALLOW
+}
+
+rule NetworkAdmin_r6{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: CREATE,READ
+    resource: "proterra.quiz.QuizMaster"
+    action: ALLOW
+}
+
+rule NetworkAdmin_r7{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: CREATE
+    resource: "org.hyperledger.composer.system.AddParticipant"
+    action: ALLOW
+}
+
+rule NetworkAdmin_r8{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: CREATE
+    resource: "org.hyperledger.composer.system.Identity"
+    action: ALLOW
+}
+
+rule NetworkAdmin_r9{
+    description: "Network Admin should be able to create the participants who are business admins"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: CREATE
+    resource: "org.hyperledger.composer.system.IssueIdentity"
+    action: ALLOW
+}
+ /** 
+  * Rest discover identity
+  * Pure discovery only
+  */
+rule Rest_r1{
+    description: "Quiz masters have basic access to the network"
+    participant: "proterra.quiz.QuizMaster"
+    operation: READ
+    resource: "org.hyperledger.composer.system.Network#quiz-network@0.0.1"
+    action: ALLOW
+}

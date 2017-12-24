@@ -1,0 +1,98 @@
+/**
+ * 
+ */
+namespace proterra.quiz
+
+/*
+*/
+asset Quiz identified by id {
+  o String       id
+  o String       name
+  o DateTime     setDate
+  o String       answersPDF
+  o String       questionsPDF
+  o String icon  optional
+  --> Question[] questions
+  --> Answer[]   answers
+}
+
+/** Bidirectional linked questions and answers 
+ */
+asset Question identified by id {
+  o String id
+  o String text
+  --> Answer answer
+  --> Quiz quiz
+}
+
+asset Answer identified by id {
+  o String     id
+  o String     text
+  --> Question answer
+  --> Quiz     quiz
+}
+
+concept AnswerResult  {
+  o Boolean result
+  o String givenAnswer
+  --> Question question
+}
+
+concept AnswerAttempt  {
+  o String submittedAnswer
+  --> Question question
+}
+
+/**
+ * A given quiz attempt - created as a result of submitting the 'SubmitAnswers'
+ * transaction
+ */
+asset QuizAttempt identified by id {
+  o String id
+  --> Quiz quiztaken
+  o AnswerResult[]  results
+}
+
+/* -------------------------------------------------------------------------------- 
+ * Participants
+ */
+abstract participant Person identified by email {
+  o String email
+  o String firstname
+  o String lastname
+}
+
+/**
+ * The participant who can see everybody's marks and what they have answered
+ * Can also create quizes and answers 
+ */
+participant QuizMaster extends Person {
+}
+
+
+participant Student extends Person {
+  --> QuizAttempt[] quizAttempts   optional
+}
+
+/* -------------------------------------------------------------------------------- 
+ * Transactions
+ */
+
+/** Submit the tranasction for a set of possible answers
+ * Each on of these will give a new QuizAttempt asset created and assigned to the 
+ * current participant.
+ */
+transaction SubmitAnswers {
+  o String          attemptId
+  --> Student       student
+  --> Quiz          attemptedQuiz
+  o AnswerAttempt[] responses
+}
+
+/**
+ * Setup transactions
+ */
+transaction SetupData {
+  o String rawJSONData
+}
+  
